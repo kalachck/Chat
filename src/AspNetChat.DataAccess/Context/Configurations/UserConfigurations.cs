@@ -13,6 +13,13 @@ namespace AspNetChat.DataAccess.Context.Configurations
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.HasIndex(x => x.UserName)
+                .IsUnique();
+
+            builder.Property(x => x.UserName)
+                .IsRequired()
+                .HasMaxLength(30);
+
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(30);
@@ -26,8 +33,8 @@ namespace AspNetChat.DataAccess.Context.Configurations
 
             builder.HasData
             (
-                new User { Id = 1, Name = "Сергей", Surname = "Kalachev" },
-                new User { Id = 2, Name = "Gleb", Surname = "Ponteleev" }
+                new User { Id = 1, UserName = "olegMarsh", Name = "Oleg", Surname = "Marshin" },
+                new User { Id = 2, UserName = "gleb_pont", Name = "Gleb", Surname = "Ponteleev" }
             );
         }
     }

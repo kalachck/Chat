@@ -4,6 +4,8 @@ namespace AspNetChat.DataAccess.Entities
 {
     public class User : BaseEntity
     {
+        public string UserName { get; set; } = null!;
+
         public string Name { get; set; } = null!;
 
         public string? Surname { get; set; }

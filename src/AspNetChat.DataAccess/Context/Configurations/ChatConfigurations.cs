@@ -22,13 +22,13 @@ namespace AspNetChat.DataAccess.Context.Configurations
 
             builder.HasOne(x => x.User)
                 .WithMany(x => x.Chats)
-                .HasForeignKey(x => x.CreatedByUserId)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData
             (
-                new Chat { Id = 1, ChatName = "Chat1", CreatedByUserId = 1 },
-                new Chat { Id = 2, ChatName = "Chat2", CreatedByUserId = 2 }
+                new Chat { Id = 1, ChatName = "Chat1", UserId = 1 },
+                new Chat { Id = 2, ChatName = "Chat2", UserId = 2 }
             );
         }
     }
