@@ -4,10 +4,12 @@ namespace AspNetChat.Business.Services.Abstract
 {
     public interface IMessageService
     {
-        Task<MessageDto> CreateMessageAsync(CreateMessageRequestModel requestModel);
+        Task<List<MessageDto>> GetByChatIdAsync(int chatId);
 
-        Task<MessageDto> UpdateMessageAsync(int id, UpdateMessageRequestModel requestModel);
+        Task<MessageDto> CreateAsync(CreateMessageRequestModel requestModel);
 
-        Task<bool> DeleteMessageAsync(int id);
+        Task<MessageDto> UpdateMessage(int id, UpdateMessageRequestModel requestModel);
+
+        Task<bool> DeleteMessage(int id);
     }
 }

@@ -28,14 +28,6 @@ namespace AspNetChat.DataAccess.Context.Configurations
                 .WithMany(x => x.UserChats)
                 .HasForeignKey(x => x.ChatId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasData
-            (
-                new UserChat { Id = 1, ChatId = 1, UserId = 1 },
-                new UserChat { Id = 2, ChatId = 1, UserId = 2 },
-                new UserChat { Id = 3, ChatId = 2, UserId = 1 },
-                new UserChat { Id = 4, ChatId = 2, UserId = 2 }
-            );
         }
     }
 }

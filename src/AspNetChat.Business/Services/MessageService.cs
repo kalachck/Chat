@@ -19,7 +19,14 @@ namespace AspNetChat.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<MessageDto> CreateMessageAsync(CreateMessageRequestModel requestModel)
+        public async Task<List<MessageDto>> GetByChatIdAsync(int chatId)
+        {
+            var messages = await _messageRepository.GetByChatIdAsync(chatId);
+
+            return _mapper.Map<List<MessageDto>>(messages);
+        }
+
+        public async Task<MessageDto> CreateAsync(CreateMessageRequestModel requestModel)
         {
             var message = _mapper.Map<Message>(requestModel);
 
@@ -28,7 +35,7 @@ namespace AspNetChat.Business.Services
             return _mapper.Map<MessageDto>(message);
         }
 
-        public async Task<MessageDto> UpdateMessageAsync(int id, UpdateMessageRequestModel requestModel)
+        public async Task<MessageDto> UpdateMessage(int id, UpdateMessageRequestModel requestModel)
         {
             var message = await _messageRepository.GetAsync(x => x.Id == id);
 
@@ -44,7 +51,7 @@ namespace AspNetChat.Business.Services
             return _mapper.Map<MessageDto>(message);
         }
 
-        public async Task<bool> DeleteMessageAsync(int id)
+        public async Task<bool> DeleteMessage(int id)
         {
             var message = await _messageRepository.GetAsync(x => x.Id == id);
 

@@ -30,12 +30,6 @@ namespace AspNetChat.DataAccess.Context.Configurations
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
-
-            builder.HasData
-            (
-                new User { Id = 1, UserName = "olegMarsh", Name = "Oleg", Surname = "Marshin" },
-                new User { Id = 2, UserName = "gleb_pont", Name = "Gleb", Surname = "Ponteleev" }
-            );
         }
     }
 }

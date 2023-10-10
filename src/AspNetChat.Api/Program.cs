@@ -1,3 +1,5 @@
+using AspNetChat.Api.Hubs;
+using AspNetChat.Business.Extensions;
 using AspNetChat.DataAccess.Extensions;
 
 namespace AspNetChat.Api
@@ -12,7 +14,11 @@ namespace AspNetChat.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDatabaseContext(builder.Configuration);
-            builder.Services.AddDataAccessDependencies();
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
+            builder.Services.AddMappers();
+
+            builder.Services.AddSignalR();
 
             if (!builder.Environment.IsEnvironment("Testing"))
             {
@@ -31,6 +37,7 @@ namespace AspNetChat.Api
 
             app.UseAuthorization();
 
+            app.MapHub<ChatHub>("/chathub");
 
             app.MapControllers();
 

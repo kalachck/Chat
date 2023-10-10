@@ -13,9 +13,11 @@ namespace AspNetChat.DataAccess.Context.Configurations
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
+            builder.HasIndex(x => x.ChatName)
+                .IsUnique();
+
             builder.Property(x => x.ChatName)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
 
             builder.Property(x => x.CreatedAt)
                 .IsRequired();
@@ -24,12 +26,6 @@ namespace AspNetChat.DataAccess.Context.Configurations
                 .WithMany(x => x.Chats)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasData
-            (
-                new Chat { Id = 1, ChatName = "Chat1", UserId = 1 },
-                new Chat { Id = 2, ChatName = "Chat2", UserId = 2 }
-            );
         }
     }
 }

@@ -6,6 +6,8 @@ namespace AspNetChat.Business.Services.Abstract
     {
         Task<ChatDto> GetAsync(int id);
 
+        Task<List<ChatDto>> GetByUserIdAsync(int userId);
+
         Task<ChatDto> CreateAsync(CreateChatRequestModel requestModel);
 
         Task<ChatDto> UpdateAsync(int id, UpdateChatRequestModel requestModel);

@@ -9,7 +9,7 @@ namespace AspNetChat.DataAccess.Repositories
     public class BaseRepository<TEntity> : IRepository<TEntity>
     where TEntity : BaseEntity
     {
-        private readonly DatabaseContext _databaseContext;
+        protected readonly DatabaseContext _databaseContext;
 
         public BaseRepository(DatabaseContext databaseContext)
         {

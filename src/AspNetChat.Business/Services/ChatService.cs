@@ -29,6 +29,13 @@ namespace AspNetChat.Business.Services
             return _mapper.Map<ChatDto>(chat);
         }
 
+        public async Task<List<ChatDto>> GetByUserIdAsync(int userId)
+        {
+            var chats = await _chatRepository.GetByUserIdAsync(userId);
+
+            return _mapper.Map<List<ChatDto>>(chats);
+        }
+
         public async Task<ChatDto> CreateAsync(CreateChatRequestModel requestModel)
         {
             var chat = _mapper.Map<Chat>(requestModel);

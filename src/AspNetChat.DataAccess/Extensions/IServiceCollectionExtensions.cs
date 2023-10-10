@@ -18,7 +18,7 @@ namespace AspNetChat.DataAccess.Extensions
             });
         }
 
-        public static void AddDataAccessDependencies(this IServiceCollection services)
+        public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
