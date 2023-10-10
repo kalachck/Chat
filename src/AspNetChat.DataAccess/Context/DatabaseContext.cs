@@ -12,8 +12,6 @@ namespace AspNetChat.DataAccess.Context
 
         public DbSet<Message> Messages { get; set; }
 
-        public DbSet<UserChat> UserChats { get; set; }
-
         public DatabaseContext(DbContextOptions options) : base(options)
         { }
 

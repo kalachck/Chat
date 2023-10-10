@@ -12,7 +12,7 @@ namespace AspNetChat.DataAccess.Entities
 
         public User? User { get; set; }
 
-        public int ChatId { get; set; }
+        public string ChatName { get; set; } = null!;
 
         public Chat? Chat { get; set; }
     }

@@ -4,7 +4,7 @@ namespace AspNetChat.Business.Services.Abstract
 {
     public interface IChatService
     {
-        Task<ChatDto> GetAsync(int id);
+        Task<List<ChatDto>> GetChatsAsync(int page, int take);
 
         Task<List<ChatDto>> GetByUserIdAsync(int userId);
 

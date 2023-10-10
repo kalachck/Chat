@@ -15,7 +15,5 @@ namespace AspNetChat.DataAccess.Entities
         public ICollection<Chat>? Chats { get; set; }
 
         public ICollection<Message>? Messages { get; set; }
-
-        public ICollection<UserChat>? UserChats { get; set; } 
     }
 }

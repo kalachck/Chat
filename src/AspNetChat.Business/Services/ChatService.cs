@@ -10,23 +10,20 @@ namespace AspNetChat.Business.Services
     public class ChatService : IChatService
     {
         private readonly IChatRepository _chatRepository;
-        private readonly IUserChatRepository _userChatRepository;
         private readonly IMapper _mapper;
 
         public ChatService(IChatRepository chatRepository,
-            IUserChatRepository userChatRepository,
             IMapper mapper)
         {
             _chatRepository = chatRepository;
-            _userChatRepository = userChatRepository;
             _mapper = mapper;
         }
 
-        public async Task<ChatDto> GetAsync(int id)
+        public async Task<List<ChatDto>> GetChatsAsync(int page, int take)
         {
-            var chat = await _chatRepository.GetAsync(x => x.Id == id);
+            var chats = await _chatRepository.GetChatsAsync(page, take);
 
-            return _mapper.Map<ChatDto>(chat);
+            return _mapper.Map<List<ChatDto>>(chats);
         }
 
         public async Task<List<ChatDto>> GetByUserIdAsync(int userId)
@@ -38,10 +35,16 @@ namespace AspNetChat.Business.Services
 
         public async Task<ChatDto> CreateAsync(CreateChatRequestModel requestModel)
         {
-            var chat = _mapper.Map<Chat>(requestModel);
+            var chat = await _chatRepository.GetAsync(x => x.ChatName == requestModel.ChatName);
+
+            if (chat == null)
+            {
+                throw new AlreadyExistsException("This chat already exists");
+            }
+
+            chat = _mapper.Map<Chat>(requestModel);
 
             await _chatRepository.CreateAsync(chat);
-            await _userChatRepository.CreateAsync(new UserChat {ChatId = chat.Id, UserId = requestModel.UserId});
 
             return _mapper.Map<ChatDto>(chat);
         }
@@ -62,7 +65,7 @@ namespace AspNetChat.Business.Services
 
         public async Task<bool> DeleteAsync(int chatId, int userId)
         {
-            var chat = await _chatRepository.GetAsync(x => x.UserId == userId);
+            var chat = await _chatRepository.GetAsync(x => x.CreatorId == userId);
 
             if (chat == null)
             {

@@ -33,11 +33,13 @@ namespace AspNetChat.Api
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
-            app.MapHub<ChatHub>("/chathub");
+            app.MapHub<ChatHub>("/chat");
 
             app.MapControllers();
 

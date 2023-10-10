@@ -4,6 +4,6 @@
     {
         public string ChatName { get; set; } = null!;
 
-        public int UserId { get; set; }
+        public int CreatorId { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace AspNetChat.DataAccess.Context.Configurations
             builder.Property(x => x.Content)
                 .IsRequired();
 
-            builder.Property(x => x.ChatId)
+            builder.Property(x => x.ChatName)
                 .IsRequired();
 
             builder.Property(x => x.UserId)
@@ -29,7 +29,8 @@ namespace AspNetChat.DataAccess.Context.Configurations
 
             builder.HasOne(x => x.Chat)
                 .WithMany(x => x.Messages)
-                .HasForeignKey(x => x.ChatId)
+                .HasForeignKey(x => x.ChatName)
+                .HasPrincipalKey(x => x.ChatName)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

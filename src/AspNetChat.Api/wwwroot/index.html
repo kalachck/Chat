@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>index</title>
+</head>
+<script src="./js/signalR.js"></script>
+<body>
+    <script>
+        var currentChat = ""
+
+        var currentUserId;
+
+        const setUserId = (id) => {
+            currentUserId = id;
+        }
+
+        let connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7261/chat")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        const send = (message) => connection.send('SendMessageAsync', {
+            content: message,
+            userId: currentUserId,
+            chatName: currentChat
+        })
+
+        const update = (messageId, message) => connection.send('UpdateMessageAsync', messageId,
+            {
+                content: message
+            })
+
+        const create = (chatName) => {
+            const response = axios.post("https://localhost:7261/api/chat", {
+                    chatName: chatName,
+                    creatorId: currentUserId
+                })
+                .then(response => console.log(response))
+                .catch(error => console.log(error))
+        }
+
+        const logMessage = (m) => console.log(m) // needed for working example
+
+        const join = (chat) => connection.start()
+            .then(() => connection.invoke('JoinChatAsync', chat))
+            .then((messages) => {
+                console.log('message history', messages)
+                currentChat = chat
+                connection.on('SendMessage', logMessage)
+                connection.on('UpdateMessage', (m) =>
+                    logMessage("User with id: " + m.userId + "changed message with id:" + m.id + " on " + m.content)) // needed for working example
+            })
+
+        const leave = () => connection.send('LeaveChatAsync', currentChat)
+            .then(() => {
+                currentChat = ''
+                connection.off('SendMessage')
+                return connection.stop()
+            })
+    </script>
+</body>
+</html>

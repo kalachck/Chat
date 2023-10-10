@@ -8,12 +8,10 @@ namespace AspNetChat.DataAccess.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public int UserId { get; set; }
+        public int CreatorId { get; set; }
 
         public User? User { get; set; }
 
         public ICollection<Message>? Messages { get; set; }
-
-        public ICollection<UserChat>? UserChats { get; set; }
     }
 }

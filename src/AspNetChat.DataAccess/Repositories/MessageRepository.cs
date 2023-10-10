@@ -11,9 +11,10 @@ namespace AspNetChat.DataAccess.Repositories
             : base(databaseContext)
         { }
 
-        public async Task<List<Message>> GetByChatIdAsync(int chatId)
+        public async Task<List<Message>> GetByChatNameAsync(string chatName)
         {
-            return await _databaseContext.Messages.Where(x => x.ChatId == chatId).ToListAsync();
+            return await _databaseContext.Messages
+                .Where(x => x.Chat.ChatName == chatName).ToListAsync();
         }
     }
 }

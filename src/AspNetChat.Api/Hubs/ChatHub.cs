@@ -1,5 +1,4 @@
 ﻿using AspNetChat.Business.Services.Abstract;
-using AspNetChat.Models.Chat;
 using AspNetChat.Models.Message;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,41 +13,46 @@ namespace AspNetChat.Api.Hubs
             _messageService = messageService;
         }
 
-        public async Task<List<MessageDto>> JoinChatAsync(int chatId, string userName)
+        public async Task<List<MessageDto>> JoinChatAsync(string chatName)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, chatId.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatName);
 
-            var messages = await _messageService.GetByChatIdAsync(chatId);
+            var messages = await _messageService.GetByChatNameAsync(chatName);
 
             return messages;
         }
 
-        public async Task LeaveChatAsync(int chatId)
+        public async Task LeaveChatAsync(string chatName)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId.ToString());
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatName);
         }
 
-        public async Task SendMessage(CreateMessageRequestModel requestModel)
+        public async Task SendMessageAsync(CreateMessageRequestModel requestModel)
         {
             var message = await _messageService.CreateAsync(requestModel);
 
-            await Clients.GroupExcept(requestModel.ChatId.ToString(), new [] { Context.ConnectionId })
-                .SendAsync("sendMessage", message.Content);
+            await Clients.GroupExcept(requestModel.ChatName, new [] { Context.ConnectionId })
+                .SendAsync("SendMessage", message.Content);
         }
 
-        public Task UpdateMessage(UpdateMessageRequestModel requestModel)
+        public async Task<MessageDto> UpdateMessageAsync(int messageId, UpdateMessageRequestModel requestModel)
         {
-            throw new NotImplementedException();
+            var message = await _messageService.UpdateAsync(messageId, requestModel);
+
+            await Clients.Group(message.ChatName)
+                .SendAsync("UpdateMessage", message);
+
+            return message;
         }
 
-        public Task DeleteMessage(int messageId)
+        public async Task<bool> DeleteMessageAsync(int messageId, string chatName)
         {
-            throw new NotImplementedException();
-        }
+            var result = await _messageService.DeleteAsync(messageId);
 
-        public Task DeleteChat(int chatId)
-        {
-            throw new NotImplementedException();
+            await Clients.Group(chatName)
+                .SendAsync("UpdateMessage", result.ToString());
+
+            return result;
         }
     }
 }

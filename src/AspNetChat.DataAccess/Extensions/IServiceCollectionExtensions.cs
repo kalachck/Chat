@@ -23,7 +23,6 @@ namespace AspNetChat.DataAccess.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
-            services.AddScoped<IUserChatRepository, UserChatRepository>();
         }
 
         public static void MigrateDatabase(this IServiceCollection services)
