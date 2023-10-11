@@ -4,12 +4,12 @@
     {
         public int Id { get; set; }
 
-        public string Content { get; set; } = null!;
+        public string Content { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public int UserId { get; set; }
 
-        public string ChatName { get; set; } = null!;
+        public string ChatName { get; set; }
     }
 }

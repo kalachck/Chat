@@ -2,6 +2,6 @@
 {
     public class UpdateChatRequestModel
     {
-        public string ChatName { get; set; } = null!;
+        public string ChatName { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace AspNetChat.Business.Services
         {
             var chat = await _chatRepository.GetAsync(x => x.ChatName == requestModel.ChatName);
 
-            if (chat == null)
+            if (chat != null)
             {
                 throw new AlreadyExistsException("This chat already exists");
             }
@@ -51,7 +51,14 @@ namespace AspNetChat.Business.Services
 
         public async Task<ChatDto> UpdateAsync(int id, UpdateChatRequestModel requestModel)
         {
-            var chat = await _chatRepository.GetAsync(x => x.Id == id);
+            var chat = await _chatRepository.GetAsync(x => x.ChatName == requestModel.ChatName);
+
+            if (chat != null)
+            {
+                throw new AlreadyExistsException("Chat with this name already exists");
+            }
+
+            chat = await _chatRepository.GetAsync(x => x.Id == id);
 
             if (chat == null)
             {
@@ -60,12 +67,14 @@ namespace AspNetChat.Business.Services
 
             chat.ChatName = requestModel.ChatName;
 
+            await _chatRepository.UpdateAsync(chat);
+
             return _mapper.Map<ChatDto>(chat);
         }
 
-        public async Task<bool> DeleteAsync(int chatId, int userId)
+        public async Task<bool> DeleteAsync(string chatName, int userId)
         {
-            var chat = await _chatRepository.GetAsync(x => x.CreatorId == userId);
+            var chat = await _chatRepository.GetAsync(x => x.CreatorId == userId && x.ChatName == chatName);
 
             if (chat == null)
             {

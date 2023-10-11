@@ -2,7 +2,7 @@
 {
     public class CreateChatRequestModel
     {
-        public string ChatName { get; set; } = null!;
+        public string ChatName { get; set; }
 
         public int CreatorId { get; set; }
     }

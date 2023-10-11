@@ -4,9 +4,9 @@ using AspNetChat.DataAccess.Entities.Abstract;
 namespace AspNetChat.DataAccess.Repositories.Abstract
 {
     public interface IRepository<TEntity>
-    where TEntity : BaseEntity
+        where TEntity : BaseEntity
     {
-        Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> expression);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression);
 
         Task CreateAsync(TEntity entity);
 

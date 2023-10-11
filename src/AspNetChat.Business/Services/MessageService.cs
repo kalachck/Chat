@@ -9,10 +9,10 @@ namespace AspNetChat.Business.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly IMessageRepository _messageRepository;
         private readonly IMapper _mapper;
+        private readonly IMessageRepository _messageRepository;
 
-        public MessageService(IMessageRepository messageRepository, 
+        public MessageService(IMessageRepository messageRepository,
             IMapper mapper)
         {
             _messageRepository = messageRepository;

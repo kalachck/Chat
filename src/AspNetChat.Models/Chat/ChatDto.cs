@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string ChatName { get; set; } = null!;
+        public string ChatName { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

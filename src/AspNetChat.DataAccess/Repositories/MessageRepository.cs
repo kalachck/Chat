@@ -14,7 +14,7 @@ namespace AspNetChat.DataAccess.Repositories
         public async Task<List<Message>> GetByChatNameAsync(string chatName)
         {
             return await _databaseContext.Messages
-                .Where(x => x.Chat.ChatName == chatName).ToListAsync();
+                .Where(x => x.Chat!.ChatName == chatName).ToListAsync();
         }
     }
 }

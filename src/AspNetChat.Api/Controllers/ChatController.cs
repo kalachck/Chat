@@ -23,7 +23,8 @@ namespace AspNetChat.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet, Route("user")]
+        [HttpGet]
+        [Route("user")]
         public async Task<ActionResult> GetByUserIdAsync(int userId)
         {
             var result = await _chatService.GetByUserIdAsync(userId);
@@ -48,9 +49,9 @@ namespace AspNetChat.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteAsync(int chatId, int userId)
+        public async Task<ActionResult> DeleteAsync(string chatName, int userId)
         {
-            var result = await _chatService.DeleteAsync(chatId, userId);
+            var result = await _chatService.DeleteAsync(chatName, userId);
 
             return Ok(result);
         }

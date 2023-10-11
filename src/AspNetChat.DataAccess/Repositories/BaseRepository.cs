@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AspNetChat.DataAccess.Repositories
 {
     public class BaseRepository<TEntity> : IRepository<TEntity>
-    where TEntity : BaseEntity
+        where TEntity : BaseEntity
     {
         protected readonly DatabaseContext _databaseContext;
 
@@ -16,7 +16,7 @@ namespace AspNetChat.DataAccess.Repositories
             _databaseContext = databaseContext;
         }
 
-        public virtual async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await _databaseContext.Set<TEntity>().FirstOrDefaultAsync(expression);
         }

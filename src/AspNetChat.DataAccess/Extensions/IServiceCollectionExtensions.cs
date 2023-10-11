@@ -1,6 +1,6 @@
 ﻿using AspNetChat.DataAccess.Context;
-using AspNetChat.DataAccess.Repositories.Abstract;
 using AspNetChat.DataAccess.Repositories;
+using AspNetChat.DataAccess.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
