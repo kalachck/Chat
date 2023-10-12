@@ -31,7 +31,7 @@ namespace AspNetChat.Api.Hubs
         {
             var message = await _messageService.CreateAsync(requestModel);
 
-            await Clients.GroupExcept(requestModel.ChatName, new[] { Context.ConnectionId })
+            await Clients.Group(requestModel.ChatName)
                 .SendAsync("SendMessage", message.Content);
         }
 

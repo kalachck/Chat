@@ -1,5 +1,6 @@
 ﻿using AspNetChat.DataAccess.Context;
 using AutoFixture;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace AspNetChat.Api.IntegrationTests.ApplicationConfiguration
             });
         }
 
-        private static void AddTestDatabase(IServiceCollection services)
+        public static void AddTestDatabase(IServiceCollection services)
         {
             var descriptor = services.SingleOrDefault(x =>
                 x.ServiceType == typeof(DbContextOptions<DatabaseContext>));

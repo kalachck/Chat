@@ -1,14 +1,14 @@
 ﻿using AspNetChat.Api.IntegrationTests.Constants;
-using AspNetChat.Api.IntegrationTests.ControllerTests.Abstract;
 using System.Net;
 using AspNetChat.Models.User;
 using FluentAssertions;
 using AutoFixture;
 using AutoFixture.Xunit2;
+using AspNetChat.Api.IntegrationTests.Abstract;
 
 namespace AspNetChat.Api.IntegrationTests.ControllerTests
 {
-    public class UserControllerTests : BaseControllerTests
+    public class UserControllerTests : BaseIntegrationTests
     {
         [Fact]
         public async Task GetAsync_WhenEntityExists_ReturnsOk()

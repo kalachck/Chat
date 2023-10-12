@@ -1,5 +1,5 @@
-﻿using AspNetChat.Api.IntegrationTests.Constants;
-using AspNetChat.Api.IntegrationTests.ControllerTests.Abstract;
+﻿using AspNetChat.Api.IntegrationTests.Abstract;
+using AspNetChat.Api.IntegrationTests.Constants;
 using AspNetChat.Models.Chat;
 using AutoFixture;
 using AutoFixture.Xunit2;
@@ -8,7 +8,7 @@ using System.Net;
 
 namespace AspNetChat.Api.IntegrationTests.ControllerTests
 {
-    public class ChatControllerTests : BaseControllerTests
+    public class ChatControllerTests : BaseIntegrationTests
     {
         [Theory]
         [AutoData]

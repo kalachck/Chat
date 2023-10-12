@@ -39,6 +39,7 @@ namespace AspNetChat.Api.IntegrationTests.ApplicationConfiguration
             var user = await CreateUserAsync();
 
             var chat = _fixture.Build<Chat>()
+                .Without(x => x.Id)
                 .With(x => x.CreatorId, user.Id)
                 .Create();
 
@@ -48,11 +49,10 @@ namespace AspNetChat.Api.IntegrationTests.ApplicationConfiguration
             return chat;
         }
 
-        public async Task<Message> CreateMessageByChatCreatorAsync()
+        public async Task<Message> CreateMessageAsync(Chat chat)
         {
-            var chat = await CreateChatAsync();
-
             var message = _fixture.Build<Message>()
+                .Without(x => x.Id)
                 .With(x => x.ChatName, chat.ChatName)
                 .With(x => x.UserId, chat.CreatorId)
                 .Create();
@@ -63,21 +63,18 @@ namespace AspNetChat.Api.IntegrationTests.ApplicationConfiguration
             return message;
         }
 
-        public async Task<Message> CreateMessageByChatUserAsync()
+        public async Task<List<Message>> CreateMessagesAsync(Chat chat, int numberOfMessages)
         {
-            var user = await CreateUserAsync();
-
-            var chat = await CreateChatAsync();
-
-            var message = _fixture.Build<Message>()
+            var messages = _fixture.Build<Message>()
+                .Without(x => x.Id)
                 .With(x => x.ChatName, chat.ChatName)
-                .With(x => x.UserId, user.Id)
-                .Create();
+                .With(x => x.UserId, chat.CreatorId)
+                .CreateMany(numberOfMessages).ToList();
 
-            _databaseContext.Messages.Add(message);
+            _databaseContext.Messages.AddRange(messages);
             await _databaseContext.SaveChangesAsync();
 
-            return message;
+            return messages;
         }
     }
 }

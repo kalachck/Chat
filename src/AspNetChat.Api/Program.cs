@@ -24,7 +24,10 @@ namespace AspNetChat.Api
 
             builder.Services.AddValidators();
             builder.Services.AddNewtonsoftJson();
-            builder.Services.AddSignalR();
+            builder.Services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
 
             if (!builder.Environment.IsEnvironment("Testing"))
             {
