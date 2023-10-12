@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Newtonsoft.Json;
 
 namespace AspNetChat.Api.Extensions
 {
@@ -10,6 +11,15 @@ namespace AspNetChat.Api.Extensions
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
+        }
+
+        public static void AddNewtonsoftJson(this IServiceCollection services)
+        {
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
         }
     }
 }

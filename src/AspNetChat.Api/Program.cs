@@ -1,5 +1,6 @@
 using AspNetChat.Api.Extensions;
 using AspNetChat.Api.Hubs;
+using AspNetChat.Api.Middlewares;
 using AspNetChat.Business.Extensions;
 using AspNetChat.DataAccess.Extensions;
 
@@ -14,12 +15,15 @@ namespace AspNetChat.Api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddDatabaseContext(builder.Configuration);
             builder.Services.AddRepositories();
+
             builder.Services.AddServices();
             builder.Services.AddMappers();
-            builder.Services.AddValidators();
 
+            builder.Services.AddValidators();
+            builder.Services.AddNewtonsoftJson();
             builder.Services.AddSignalR();
 
             if (!builder.Environment.IsEnvironment("Testing"))
@@ -36,6 +40,8 @@ namespace AspNetChat.Api
             }
 
             app.UseStaticFiles();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 

@@ -1,4 +1,5 @@
-﻿using AspNetChat.DataAccess.Context;
+﻿using AspNetChat.Api.IntegrationTests.AutoFixtureConfigurations;
+using AspNetChat.DataAccess.Context;
 using AspNetChat.DataAccess.Entities;
 using AutoFixture;
 
@@ -13,6 +14,14 @@ namespace AspNetChat.Api.IntegrationTests.ApplicationConfiguration
         {
             _databaseContext = databaseContext;
             _fixture = fixture;
+
+
+            _fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+                .ForEach(b => _fixture.Behaviors.Remove(b));
+
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
+            _fixture.Customize(new AutoFixtureCustomizations());
         }
 
         public async Task<User> CreateUserAsync()
