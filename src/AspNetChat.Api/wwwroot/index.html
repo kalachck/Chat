@@ -32,6 +32,9 @@
             content: message
         });
 
+    const deleteMessage = (messageId) => connection.send('DeleteMessageAsync',
+        messageId, currentChat);
+
     const create = (chatName) => {
         const response = axios.post("https://localhost:7261/api/chat",
                 {
@@ -53,7 +56,8 @@
                     console.log('message history', messages);
                     currentChat = chat;
                     connection.on('SendMessage', logMessage);
-                    connection.on('UpdateMessage', (m) => logMessage("User with id: " + m.userId + "changed message with id:" + m.id + " on " + m.content)); // needed for working example
+                    connection.on('UpdateMessage', (m) => logMessage("User with id: " + m.userId + " changed message with id:" + m.id + " on " + m.content));
+                    connection.on('DeleteMessage', (m) => logMessage("Message with id has been deleted " + m)); // needed for working example
                 });
         } catch (error) {
             console.log(error);

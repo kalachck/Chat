@@ -108,6 +108,26 @@ namespace AspNetChat.Api.IntegrationTests.ControllerTests
 
         [Theory]
         [AutoData]
+        public async Task UpdateAsync_WhenEntityWithUserNameExists_ReturnsConflict(
+            UpdateUserRequestModel requestModel)
+        {
+            //Arrange
+            var user = await _dataManager.CreateUserAsync();
+
+            requestModel.Name = user.UserName;
+
+            var requestBody = BuildRequestBody(requestModel);
+
+            //Act
+            var response = await ExecuteWithStatusCodeAsync(
+                $"{ApiConstants.UserApi}?id={1}", HttpMethod.Put, requestBody);
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        }
+
+        [Theory]
+        [AutoData]
         public async Task UpdateAsync_WhenEntityNotExists_ReturnsNotFound(
             UpdateUserRequestModel requestModel)
         {

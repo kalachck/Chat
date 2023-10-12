@@ -119,8 +119,19 @@ namespace AspNetChat.Business.UnitTests.ServiceTests
             UpdateUserRequestModel requestModel)
         {
             //Arrange
+            var isFirstCall = true;
+
             _mockUserRepository.Setup(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()))
-                .ReturnsAsync(user);
+                .ReturnsAsync(() =>
+                {
+                    if (isFirstCall)
+                    {
+                        isFirstCall = false;
+                        return null;
+                    }
+
+                    return user;
+                });
 
             _mockUserRepository.Setup(x => x.UpdateAsync(It.IsAny<User>()));
 
@@ -134,17 +145,44 @@ namespace AspNetChat.Business.UnitTests.ServiceTests
             //Assert
             result.Should().NotBeNull().And.BeOfType<UserDto>();
 
-            _mockUserRepository.Verify(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()), Times.AtLeast(2));
             _mockUserRepository.Verify(x => x.UpdateAsync(It.IsAny<User>()), Times.Once);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public async Task UpdateAsync_WhenUserWithUserNameExists_ThrowsAlreadyExistsException(
+            int id,
+            UpdateUserRequestModel requestModel,
+            User user)
+        {
+            //Arrange
+            var isFirstCall = true;
+
+            _mockUserRepository.Setup(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()))
+                .ReturnsAsync(user);
+
+            var userService = new UserService(_mockUserRepository.Object, _mockMapper.Object);
+
+            //Act
+            var act = () => userService.UpdateAsync(id, requestModel);
+
+            //Assert
+            await act.Should().ThrowAsync<AlreadyExistsException>();
+
+            _mockUserRepository.Verify(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
         }
 
         [Theory]
         [CustomAutoData]
         public async Task UpdateAsync_WhenUserDoesNotExist_ThrowsNotFoundException(
             int id,
-            UpdateUserRequestModel requestModel)
+            UpdateUserRequestModel requestModel,
+            User user)
         {
             //Arrange
+            var isFirstCall = true;
+
             _mockUserRepository.Setup(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()))
                 .ReturnsAsync(value: null);
 
@@ -156,7 +194,7 @@ namespace AspNetChat.Business.UnitTests.ServiceTests
             //Assert
             await act.Should().ThrowAsync<NotFoundException>();
 
-            _mockUserRepository.Verify(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAsync(It.IsAny<Expression<Func<User, bool>>>()), Times.AtLeast(2));
         }
 
         [Theory]

@@ -50,7 +50,7 @@ namespace AspNetChat.Api.Hubs
             var result = await _messageService.DeleteAsync(messageId);
 
             await Clients.Group(chatName)
-                .SendAsync("UpdateMessage", result.ToString());
+                .SendAsync("DeleteMessage", result.ToString());
 
             return result;
         }

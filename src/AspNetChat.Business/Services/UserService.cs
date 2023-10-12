@@ -50,7 +50,14 @@ public class UserService : IUserService
 
     public async Task<UserDto> UpdateAsync(int id, UpdateUserRequestModel requestModel)
     {
-        var user = await _userRepository.GetAsync(x => x.Id == id);
+        var user = await _userRepository.GetAsync(x => x.UserName == requestModel.Name);
+
+        if (user != null)
+        {
+            throw new AlreadyExistsException("Can't set name as same as userName");
+        }
+
+        user = await _userRepository.GetAsync(x => x.Id == id);
 
         if (user == null)
         {

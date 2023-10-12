@@ -4,7 +4,6 @@ using AspNetChat.Models.Message;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.SignalR.Client;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AspNetChat.Api.IntegrationTests.HubTests
 {
@@ -72,7 +71,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
 
             await _hubConnection.InvokeAsync<List<MessageDto>>(HubConstants.LeaveChatAsync, chat.ChatName);
 
-            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)).Should().BeFalse();
+            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)).Should().BeFalse();
         }
 
         [Fact]
@@ -102,7 +101,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
             await _hubConnection.InvokeAsync<MessageDto>(HubConstants.SendMessageAsync, requestModel);
 
             // Assert
-            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)))
+            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)))
             {
                 receivedMessage.Should().Be(requestModel.Content);
             }
@@ -133,7 +132,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
             await _hubConnection.InvokeAsync<MessageDto>(HubConstants.UpdateMessageAsync, message.Id, requestModel);
 
             // Assert
-            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)))
+            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)))
             {
                 message.Should().NotBe(requestModel.Content);
             }
@@ -166,7 +165,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
             await _hubConnection.InvokeAsync<MessageDto>(HubConstants.UpdateMessageAsync, 1, requestModel);
 
             // Assert
-            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)).Should().BeFalse();
+            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)).Should().BeFalse();
         }
 
         [Fact]
@@ -193,7 +192,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
             await _hubConnection.InvokeAsync<bool>(HubConstants.DeleteMessageAsync, message.Id, chat.ChatName);
 
             // Assert
-            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)))
+            if (receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)))
             {
                 receivedResult.Should().BeTrue();
             }
@@ -221,7 +220,7 @@ namespace AspNetChat.Api.IntegrationTests.HubTests
             await _hubConnection.InvokeAsync<bool>(HubConstants.DeleteMessageAsync, message.Id, chat.ChatName);
 
             // Assert
-            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(100)).Should().BeFalse();
+            receivedMessageEvent.WaitOne(TimeSpan.FromMilliseconds(10)).Should().BeFalse();
         }
     }
 }
