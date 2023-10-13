@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetChat.Business\AspNetChat.Business.csproj" />
+    <ProjectReference Include="..\..\src\AspNetChat.Business\AspNetChat.Business.csproj" />
   </ItemGroup>
 
 </Project>

@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetChat.Api\AspNetChat.Api.csproj" />
+    <ProjectReference Include="..\..\src\AspNetChat.Api\AspNetChat.Api.csproj" />
   </ItemGroup>
 
 </Project>
