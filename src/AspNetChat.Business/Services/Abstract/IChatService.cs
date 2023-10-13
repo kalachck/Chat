@@ -10,8 +10,6 @@ namespace AspNetChat.Business.Services.Abstract
 
         Task<ChatDto> CreateAsync(CreateChatRequestModel requestModel);
 
-        Task<ChatDto> UpdateAsync(int id, UpdateChatRequestModel requestModel);
-
         Task<bool> DeleteAsync(string chatName, int userId);
     }
 }

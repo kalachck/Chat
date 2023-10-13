@@ -35,6 +35,8 @@
     const deleteMessage = (messageId) => connection.send('DeleteMessageAsync',
         messageId, currentChat);
 
+    const deleteChat = () => connection.send('DeleteChat', currentChat, currentUserId);
+
     const create = (chatName) => {
         const response = axios.post("https://localhost:7261/api/chat",
                 {
@@ -57,7 +59,9 @@
                     currentChat = chat;
                     connection.on('SendMessage', logMessage);
                     connection.on('UpdateMessage', (m) => logMessage("User with id: " + m.userId + " changed message with id:" + m.id + " on " + m.content));
-                    connection.on('DeleteMessage', (m) => logMessage("Message with id has been deleted " + m)); // needed for working example
+                    connection.on('DeleteMessage', (m) => logMessage("Message with id has been deleted " + m));
+                    connection.on('PermissionDenied', (m) => logMessage(m))
+                    connection.on('Disconnect', () => { connection.off(); connection.stop() })// needed for working example
                 });
         } catch (error) {
             console.log(error);

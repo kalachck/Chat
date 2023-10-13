@@ -1,6 +1,8 @@
-﻿using AspNetChat.Business.Services.Abstract;
+﻿using AspNetChat.Api.Hubs;
+using AspNetChat.Business.Services.Abstract;
 using AspNetChat.Models.Chat;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AspNetChat.Api.Controllers
 {
@@ -9,10 +11,13 @@ namespace AspNetChat.Api.Controllers
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatController(IChatService chatService)
+        public ChatController(IChatService chatService, 
+            IHubContext<ChatHub> hubContext)
         {
             _chatService = chatService;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -36,22 +41,6 @@ namespace AspNetChat.Api.Controllers
         public async Task<ActionResult> CreateAsync(CreateChatRequestModel requestModel)
         {
             var result = await _chatService.CreateAsync(requestModel);
-
-            return Ok(result);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> UpdateAsync(int id, UpdateChatRequestModel requestModel)
-        {
-            var result = await _chatService.UpdateAsync(id, requestModel);
-
-            return Ok(result);
-        }
-
-        [HttpDelete]
-        public async Task<ActionResult> DeleteAsync(string chatName, int userId)
-        {
-            var result = await _chatService.DeleteAsync(chatName, userId);
 
             return Ok(result);
         }
